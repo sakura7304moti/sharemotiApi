@@ -1,5 +1,5 @@
 """
-名言集のAPI
+名言集 API
 """
 from . import const
 
