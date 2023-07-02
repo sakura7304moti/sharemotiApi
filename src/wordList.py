@@ -95,7 +95,7 @@ def delete(word: str = "", desc: str = ""):
 
     # 存在するレコードなら削除する
     if result != []:
-        query = "DELETE FROM wordlist WHERE word = :word and desc = :desc)"
+        query = "DELETE FROM wordlist WHERE word = :word and desc = :desc"
         args = {"word": word, "desc": desc}
         # レコードを削除する
         cursor.execute(query, args)
