@@ -2,41 +2,47 @@
 名言集 API
 """
 from . import const
+import sqlite3
 
 output = const.Output()
-"""
-CREATE DB
-"""
-import sqlite3
+
 
 # sns.dbを作成する
 # すでに存在していれば、それにアスセスする。
 dbname = output.sqlite_db()
-conn = sqlite3.connect(dbname)
 
-# データベースへのコネクションを閉じる。(必須)
-conn.close()
 
 """
-CREATE TABLE
+CREATE DB
 """
-conn = sqlite3.connect(dbname)
-# sqliteを操作するカーソルオブジェクトを作成
-cur = conn.cursor()
 
-# wordlistというtableを作成してみる
-# 大文字部はSQL文。小文字でも問題ない。
-cur.execute(
-    """CREATE TABLE IF NOT EXISTS wordList(
-            word STRING,
-            desc STRING
-            )
-            """
-)
 
-# データベースへコミット。これで変更が反映される。
-conn.commit()
-conn.close()
+def init():
+    conn = sqlite3.connect(dbname)
+    # データベースへのコネクションを閉じる。(必須)
+    conn.close()
+
+    """
+    CREATE TABLE
+    """
+    conn = sqlite3.connect(dbname)
+    # sqliteを操作するカーソルオブジェクトを作成
+    cur = conn.cursor()
+
+    # wordlistというtableを作成してみる
+    # 大文字部はSQL文。小文字でも問題ない。
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS wordList(
+                word STRING,
+                desc STRING
+                )
+                """
+    )
+
+    # データベースへコミット。これで変更が反映される。
+    conn.commit()
+    conn.close()
+
 
 """
 INSERT and UPDATE
