@@ -57,3 +57,26 @@ class NameListRecord:  # あだ名集
 
     def __dict__(self):
         return {"key": self.key, "val": self.val}
+    
+
+class YakiListRecord:  # 焼き直し条約
+    def __init__(self, word: str, yaki: str):
+        self.word = word
+        self.yaki = yaki
+
+    def __dict__(self):
+        return {"word": self.word, "yaki": self.yaki}
+    
+class SchoolListRecord:  # 学校一覧
+    def __init__(self, word: str):
+        self.word = word
+
+    def __dict__(self):
+        return {"word": self.word}
+    
+class MannerListRecord:  # 日本国失礼憲法
+    def __init__(self, word: str):
+        self.word = word
+
+    def __dict__(self):
+        return {"word": self.word}

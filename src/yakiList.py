@@ -1,5 +1,5 @@
 """
-名言集 API
+焼き直し条約 API
 """
 from . import const
 import sqlite3
@@ -29,12 +29,12 @@ def init():
     # sqliteを操作するカーソルオブジェクトを作成
     cur = conn.cursor()
 
-    # wordlistというtableを作成してみる
+    # yakiListというtableを作成してみる
     # 大文字部はSQL文。小文字でも問題ない。
     cur.execute(
-        """CREATE TABLE IF NOT EXISTS wordList(
+        """CREATE TABLE IF NOT EXISTS yakiList(
                 word STRING,
-                desc STRING
+                yaki STRING
                 )
                 """
     )
@@ -49,26 +49,26 @@ INSERT and UPDATE
 """
 
 
-def save(word: str = "", desc: str = ""):
+def save(word: str = "", yaki: str = ""):
     # データベースに接続する
     conn = sqlite3.connect(dbname)
     cursor = conn.cursor()
 
     if word != "":
         # レコードの存在をチェックするためのクエリを作成する
-        check_query = "SELECT * FROM wordList WHERE word = :word"
+        check_query = "SELECT * FROM yakiList WHERE word = :word"
         cursor.execute(check_query, {"word": word})
         result = cursor.fetchall()
 
         if not result:
             # 存在しないレコードなら追加する
-            query = "INSERT INTO wordList (word, desc) VALUES (:word, :desc)"
-            args = {"word": word, "desc": desc}
+            query = "INSERT INTO yakiList (word, yaki) VALUES (:word, :yaki)"
+            args = {"word": word, "yaki": yaki}
             cursor.execute(query, args)
         else:
             # 存在するレコードなら更新する
-            query = "UPDATE wordList SET desc = :desc WHERE word = :word"
-            args = {"word": word, "desc": desc}
+            query = "UPDATE yakiList SET yaki = :yaki WHERE word = :word"
+            args = {"word": word, "yaki": yaki}
             cursor.execute(query, args)
 
         # 変更をコミットし、接続を閉じる
@@ -88,21 +88,21 @@ DELETE
 """
 
 
-def delete(word: str = "", desc: str = ""):
+def delete(word: str = "", yaki: str = ""):
     # データベースに接続する
     conn = sqlite3.connect(dbname)
     cursor = conn.cursor()
 
     # レコードの存在をチェックするためのクエリを作成する
-    check_query = f"SELECT * FROM wordList WHERE word = '{word}'"
+    check_query = f"SELECT * FROM yakiList WHERE word = '{word}'"
     # クエリを実行して結果を取得する
     cursor.execute(check_query)
     result = cursor.fetchall()
 
     # 存在するレコードなら削除する
     if result != []:
-        query = "DELETE FROM wordlist WHERE word = :word and desc = :desc"
-        args = {"word": word, "desc": desc}
+        query = "DELETE FROM yakiList WHERE word = :word and yaki = :yaki"
+        args = {"word": word, "yaki": yaki}
         # レコードを削除する
         cursor.execute(query, args)
 
@@ -125,7 +125,7 @@ def search(text: str = ""):
     cursor = conn.cursor()
 
     # クエリー設定
-    query = "SELECT * FROM wordList WHERE word like :text or desc like :text"
+    query = "SELECT * FROM yakiList WHERE word like :text or yaki like :text"
 
     args = {"text": f"%{text}%"}
     print("query", query)
@@ -137,7 +137,7 @@ def search(text: str = ""):
     # 結果を表示
     records = []
     for row in results:
-        rec = const.WordListRecord(*row)
+        rec = const.YakiListRecord(*row)
         records.append(rec)
 
     # 接続を閉じる
