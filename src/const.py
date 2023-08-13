@@ -3,6 +3,7 @@ import pandas as pd
 import yaml
 import glob
 import json
+import datetime
 
 # プロジェクトの相対パス
 base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -80,3 +81,25 @@ class MannerListRecord:  # 日本国失礼憲法
 
     def __dict__(self):
         return {"word": self.word}
+    
+class HaikuListRecord:#俳句一覧
+    def __init__(self,id:int,first:str,second:str,third:str,poster:str,detail:str,createAt:str,updateAt:str):
+        self.id = id
+        self.first = first
+        self.second = second
+        self.third = third
+        self.detail = detail
+        self.poster = poster
+        self.createAt = datetime.datetime.strptime(createAt,'%Y-%m-%d %H:%M:%S')
+        self.updateAt = datetime.datetime.strptime(updateAt,'%Y-%m-%d %H:%M:%S')
+
+    def __dict__(self):
+        return {"id":self.id,"first":self.first,"second":self.second,"third":self.thrid,"poster":self.poster,"detail":self.detail,"createAt":self.createAt.strftime('%Y-%m-%d %H:%M:%S'),"updateAt":self.updateAt.strftime('%Y-%m-%d %H:%M:%S')}
+
+class HaikuListStatusResult:#俳句一覧の追加結果
+    def __init__(self,success:bool,errorText:str):
+        self.success = success
+        self.errorText = errorText
+    
+    def __dict__(self):
+        return {"success":self.success,"errorText":self.errorText}
