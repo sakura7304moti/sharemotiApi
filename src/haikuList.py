@@ -60,7 +60,7 @@ def insert(first:str,second:str,third:str,poster:str,detail:str):
         conn = sqlite3.connect(dbname)
         cursor = conn.cursor()
 
-        query = "INSERT INTO haikuList (first, second,third,poster,detail,create_at,update_at) VALUES (:first, :second, :thrid, :poster, :detail, :current_time, :current_time)"
+        query = "INSERT INTO haikuList (first, second,third,poster,detail,create_at,update_at) VALUES (:first, :second, :third, :poster, :detail, :current_time, :current_time)"
         args = {"first": first, "second": second,"third":third,"poster":poster,"detail":detail,"current_time":current_time}
         cursor.execute(query, args)
 
@@ -122,7 +122,7 @@ def delete(id:int):
         cursor = conn.cursor()
 
         query = "DELETE FROM haikuList WHERE id = :id"
-        args = {"id",id}
+        args = {"id":id}
 
         # レコードを削除する
         cursor.execute(query, args)
@@ -150,14 +150,14 @@ def select(id:int,haikuText:str,poster:str,detail:str) -> list[const.HaikuListRe
     if id > -1:
         query = query + "and id = :id "
         args['id'] = id
-    if haikuText != '':
-        query = query + "and 1 = 1 or first like :haikuText or second like :haikuText or third like :haikuText "
-        args['haikuText'] = f"%{haikuText}%"
     if poster != '':
         query = query + "and poster like :poster "
         args['poster'] = f"%{poster}%"
+    if haikuText != '':
+        query = query + "and 1 = 1  and ( first like :haikuText or second like :haikuText or third like :haikuText ) "
+        args['haikuText'] = f"%{haikuText}%"
     if detail != '':
-        query = query + "and 1 = 1 or first like :detail or second like :detail or third like :detail or detail like :detail"
+        query = query + "and 1 = 1 and ( first like :detail or second like :detail or third like :detail or detail like :detail ) "
         args['detail'] = f"%{detail}%"
     # SELECTクエリを実行
     cursor.execute(query, args)

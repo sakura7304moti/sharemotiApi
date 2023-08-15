@@ -94,7 +94,7 @@ class HaikuListRecord:#俳句一覧
         self.updateAt = datetime.datetime.strptime(updateAt,'%Y-%m-%d %H:%M:%S')
 
     def __dict__(self):
-        return {"id":self.id,"first":self.first,"second":self.second,"third":self.thrid,"poster":self.poster,"detail":self.detail,"createAt":self.createAt.strftime('%Y-%m-%d %H:%M:%S'),"updateAt":self.updateAt.strftime('%Y-%m-%d %H:%M:%S')}
+        return {"id":self.id,"first":self.first,"second":self.second,"third":self.third,"poster":self.poster,"detail":self.detail,"createAt":self.createAt.strftime('%Y-%m-%d %H:%M:%S'),"updateAt":self.updateAt.strftime('%Y-%m-%d %H:%M:%S')}
 
 class HaikuListStatusResult:#俳句一覧の追加結果
     def __init__(self,success:bool,errorText:str):
