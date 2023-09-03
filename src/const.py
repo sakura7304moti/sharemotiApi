@@ -36,6 +36,11 @@ def ssbu_dict():
     df = pd.read_csv(os.path.join(base_path, "option", "ssbu_dict.csv"))
     return df
 
+def img_dir():
+    dir_name = os.path.join(base_path,'img')
+    os.makedirs(dir_name,exist_ok=True)
+    return dir_name
+
 
 """
 Record interface
@@ -103,3 +108,17 @@ class HaikuListStatusResult:#俳句一覧の追加結果
     
     def __dict__(self):
         return {"success":self.success,"errorText":self.errorText}
+    
+class ImageListRecord:#画像一覧
+    def __init__(self,
+                 id:int,
+                 title:str,#画像名
+                 create_at:str,
+                 update_at:str):
+        self.id = id
+        self.title = title
+        self.create_at = datetime.datetime.strptime(create_at,'%Y-%m-%d %H:%M:%S')
+        self.update_at = datetime.datetime.strptime(update_at,'%Y-%m-%d %H:%M:%S')
+        
+    def __dict__(self):
+        return {"id":self.id,"title":self.title,"createAt":self.create_at.strftime('%Y-%m-%d %H:%M:%S'),"updateAt":self.update_at.strftime('%Y-%m-%d %H:%M:%S')}
