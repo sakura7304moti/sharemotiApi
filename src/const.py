@@ -54,6 +54,16 @@ class WordListRecord:  # 名言集
 
     def __dict__(self):
         return {"word": self.word, "desc": self.desc}
+    
+class WordList2Record:  # 名言集2
+    def __init__(self, word: str, desc: str,createAt:str,updateAt:str):
+        self.word = word
+        self.desc = desc
+        self.createAt = datetime.datetime.strptime(createAt,'%Y-%m-%d %H:%M:%S')
+        self.updateAt = datetime.datetime.strptime(updateAt,'%Y-%m-%d %H:%M:%S')
+
+    def __dict__(self):
+        return {"word": self.word, "desc": self.desc,"createAt":self.createAt.strftime('%Y-%m-%d %H:%M:%S'),"updateAt":self.updateAt.strftime('%Y-%m-%d %H:%M:%S')}
 
 
 class NameListRecord:  # あだ名集
