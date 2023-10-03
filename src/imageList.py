@@ -10,15 +10,6 @@ import datetime
 output = const.Output()
 dbname = output.sqlite_db()
 
-
-"""
-IMAGE PATH
-"""
-def get_image_path(id:int):
-    file_name = str(id).zfill(8) + '.jpg'
-    path = os.path.join(const.img_dir(),file_name)
-    return path
-
 """
 CREATE DB
 """
@@ -37,7 +28,9 @@ def init():
     cur.execute(
     """create table if not exists imageList(
         id INTEGER PRIMARY KEY,
+        file_name STRING,
         title STRING,
+        detail STRING,
         create_at STRING,
         update_at STRING
     )
@@ -53,7 +46,7 @@ def init():
 """
 INSERT
 """
-def insert(title:str,path:str):
+def insert(file_name:str,title:str,detail:str):
     try:
         # 現在の日時を取得
         current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -62,25 +55,26 @@ def insert(title:str,path:str):
         cursor = conn.cursor()
 
         query = """
-        INSERT INTO imageList (title, createAt, updateAt) VALUES 
-        (:title, :file_name, :current_time, :current_time)
+        INSERT INTO imageList (file_name , title, detail , create_at, update_at) VALUES 
+        (:file_name, :title, :detail, :current_time, :current_time)
         """
-        args = {"title":title,"current_time":current_time}
+        args = {"file_name":file_name,"title":title,"detail":detail,"current_time":current_time}
         cursor.execute(query, args)
 
         # データベースへコミット。これで変更が反映される。
         conn.commit()
         conn.close()
-        return True
+        result = const.ImageListStatusResult(True,"")
     except Exception as e:
         print(f'insert err -> {e}')
-        return False
+        result = const.ImageListStatusResult(False,str(e))
+    return result
     
 """
 UPDATE
-更新できるのは画像名のみ
+更新できるのはタイトルと詳細のみ
 """
-def update(id:int,title:str):
+def update(id:int,title:str,detail:str):
     try:
         # 現在の日時を取得
         current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -89,12 +83,13 @@ def update(id:int,title:str):
         cursor = conn.cursor()
         
         query = """
-        UPDATE imageList SET title = :title , update_at = :current_time WHERE id = :id
+        UPDATE imageList SET title = :title , detail = :detail , update_at = :current_time WHERE id = :id
         """
         
         args={
             'id':id,
             'title':title,
+            'detail':detail,
             'current_time':current_time
         }
         cursor.execute(query, args)
@@ -102,20 +97,20 @@ def update(id:int,title:str):
         # データベースへコミット。これで変更が反映される。
         conn.commit()
         conn.close()
-        return True
+        result = const.ImageListStatusResult(True,"")
     except Exception as e:
         print(f'update err -> {e}')
-        return False
+        result = const.ImageListStatusResult(False,str(e))
+    return result
     
 """
 DELETE
 """
 def delete(id:int):
     try:
-        path = get_image_path(id)
-        if not os.path.exists(path):
-            raise FileNotFoundError(f"The file '{path}' was not found.")
-            
+        # データベースに接続する
+        conn = sqlite3.connect(dbname)
+        cursor = conn.cursor()
         query = "DELETE FROM imageList WHERE id = :id"
         args = {"id":id}
         # レコードを削除する
@@ -125,29 +120,30 @@ def delete(id:int):
         conn.commit()
         conn.close()
         
-        #todo　削除が正常に出来たらファイルも削除
-        os.remove(path)
-        
+        result = const.ImageListStatusResult(True,"")
     except Exception as e:
         print(f'delete err -> {e}')
-        return False
+        result = const.ImageListStatusResult(False,str(e))
+    return result
     
 """
-SEARCH COUNT
-検索条件
-・タイトル名
-・作成日の月
-・更新日の月
-・更新日順にする?(未指定なら作成順)
+検索
 """
-def search_count(title:str,create_month:int,update_month:int,order_update:int):
-    return 0
+def search():
+    # データベースに接続する
+    conn = sqlite3.connect(dbname)
+    cursor = conn.cursor()
+    query = "SELECT * FROM imageList"
+    # SELECTクエリを実行
+    cursor.execute(query)
+    results = cursor.fetchall()
+    
+    # 結果を表示
+    records = []
+    for row in results:
+        rec = const.ImageListRecord(*row)
+        records.append(rec)
 
-def search_query(title:str,create_month:int,update_month:int,order_update:int):
-    query = "SELECT * FROM imageList where 1 = 1 "
-    args = {}
-    if title != '':
-        query = query + "and title like :title "
-        args['title'] = f'%{title}%'
-    if create_month != 0:
-        query = query + "and strftime('%m', create_at) = :create_month"
+    # 接続を閉じる
+    conn.close()
+    return records

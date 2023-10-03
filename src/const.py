@@ -122,13 +122,29 @@ class HaikuListStatusResult:#俳句一覧の追加結果
 class ImageListRecord:#画像一覧
     def __init__(self,
                  id:int,
-                 title:str,#画像名
+                 file_name:str,
+                 title:str,
+                 detail:str,
                  create_at:str,
                  update_at:str):
         self.id = id
+        self.file_name = file_name
         self.title = title
+        self.detail = detail
         self.create_at = datetime.datetime.strptime(create_at,'%Y-%m-%d %H:%M:%S')
         self.update_at = datetime.datetime.strptime(update_at,'%Y-%m-%d %H:%M:%S')
         
     def __dict__(self):
-        return {"id":self.id,"title":self.title,"createAt":self.create_at.strftime('%Y-%m-%d %H:%M:%S'),"updateAt":self.update_at.strftime('%Y-%m-%d %H:%M:%S')}
+        return {"id":self.id,"file_name":self.file_name,"title":self.title,"detail":self.detail,"createAt":self.create_at.strftime('%Y-%m-%d %H:%M:%S'),"updateAt":self.update_at.strftime('%Y-%m-%d %H:%M:%S')}
+    def __str__(self):
+        return f"ImageListRecord(id={self.id}, file_name={self.file_name}, title={self.title}, " \
+               f"detail={self.detail}, create_at={self.create_at}, update_at={self.update_at})"
+
+    
+class ImageListStatusResult:#画像の追加結果
+    def __init__(self,success:bool,errorText:str):
+        self.success = success
+        self.errorText = errorText
+    
+    def __dict__(self):
+        return {"success":self.success,"errorText":self.errorText}
