@@ -153,14 +153,12 @@ class KaraokeListRecord:#カラオケ音声の一覧
     def __init__(self,
                  id:int,
                  file_name:str,
-                 date:str,
-                 path:str):
+                 date:str):
         self.id = id
         self.file_name = file_name
         self.date = date
-        self.path = path
         
     def __dict__(self):
-        return {"id":self.id,"fileName":self.file_name,"date":self.date,"path":self.path}
+        return {"id":self.id,"fileName":self.file_name,"date":self.date}
     def __str__(self):
-        return f"ID: {self.id}, File Name: {self.file_name}, Date: {self.date}, Path: {self.path}"
+        return f"ID: {self.id}, File Name: {self.file_name}, Date: {self.date}"
