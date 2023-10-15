@@ -3,3 +3,4 @@ src/__pycache__/
 share.db
 option/ssbu_dict.csv
 src/.ipynb_checkpoints/
+data/
