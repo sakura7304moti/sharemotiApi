@@ -162,3 +162,15 @@ class KaraokeListRecord:#カラオケ音声の一覧
         return {"id":self.id,"fileName":self.file_name,"date":self.date}
     def __str__(self):
         return f"ID: {self.id}, File Name: {self.file_name}, Date: {self.date}"
+
+class VoiceListRecord:#ボイス
+    def __init__(self,
+                 id:int,
+                 file_name:str):
+        self.id = id
+        self.file_name = file_name
+        
+    def __dict__(self):
+        return {"id":self.id,"fileName":self.file_name}
+    def __str__(self):
+        return f"ID: {self.id}, File Name: {self.file_name}"
