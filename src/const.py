@@ -174,3 +174,18 @@ class VoiceListRecord:#ボイス
         return {"id":self.id,"fileName":self.file_name}
     def __str__(self):
         return f"ID: {self.id}, File Name: {self.file_name}"
+    
+class ssbuListRecord:#スマブラのクリップ
+    def __init__(self,
+                 id:int,
+                 file_name:str,
+                 date:str):
+        self.id = id
+        self.file_name = file_name
+        self.date = date
+        self.year = year
+        
+    def __dict__(self):
+        return {"id":self.id,"fileName":self.file_name,"date":self.date,"year":self.year}
+    def __str__(self):
+        return f"ID: {self.id}, File Name: {self.file_name}, Date: {self.date}, Year: {self.year}"
