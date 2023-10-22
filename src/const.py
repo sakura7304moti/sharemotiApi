@@ -179,7 +179,8 @@ class ssbuListRecord:#スマブラのクリップ
     def __init__(self,
                  id:int,
                  file_name:str,
-                 date:str):
+                 date:str,
+                 year:str):
         self.id = id
         self.file_name = file_name
         self.date = date
