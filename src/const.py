@@ -25,11 +25,13 @@ options
 
 def ssbu_names():
     df = pd.read_csv(os.path.join(base_path, "option", "ssbu.csv"))
-    data = []
+    records = []
     for index, row in df.iterrows():
-        d = row["0"]
-        data.append(d)
-    return data
+        name = row["name"]
+        url = row["url"]
+        rec = SsbuNameRecord(name,url)
+        records.append(rec)
+    return records
 
 
 def ssbu_dict():
@@ -190,3 +192,10 @@ class ssbuListRecord:#スマブラのクリップ
         return {"id":self.id,"fileName":self.file_name,"date":self.date,"year":self.year}
     def __str__(self):
         return f"ID: {self.id}, File Name: {self.file_name}, Date: {self.date}, Year: {self.year}"
+    
+class SsbuNameRecord:#スマブラのキャラ名と画像URL
+    def __init__(self,name:str,url:str):
+        self.name = name
+        self.url = url
+    def __dict__(self):
+        return {"name":self.name,"url":self.url}
