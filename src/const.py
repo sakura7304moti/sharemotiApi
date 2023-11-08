@@ -177,6 +177,20 @@ class VoiceListRecord:#ボイス
     def __str__(self):
         return f"ID: {self.id}, File Name: {self.file_name}"
     
+class RadioListRecord:#ラジオの一覧
+    def __init__(self,
+                 id:int,
+                 file_name:str,
+                 date:str):
+        self.id = id
+        self.file_name = file_name
+        self.date = date
+        
+    def __dict__(self):
+        return {"id":self.id,"fileName":self.file_name,"date":self.date}
+    def __str__(self):
+        return f"ID: {self.id}, File Name: {self.file_name}, Date: {self.date}"
+    
 class ssbuListRecord:#スマブラのクリップ
     def __init__(self,
                  id:int,
