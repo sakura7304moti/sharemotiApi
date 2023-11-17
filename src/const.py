@@ -125,21 +125,23 @@ class ImageListRecord:#画像一覧
     def __init__(self,
                  id:int,
                  file_name:str,
+                 ext:str,
                  title:str,
                  detail:str,
                  create_at:str,
                  update_at:str):
         self.id = id
         self.file_name = file_name
+        self.ext = ext
         self.title = title
         self.detail = detail
         self.create_at = datetime.datetime.strptime(create_at,'%Y-%m-%d %H:%M:%S')
         self.update_at = datetime.datetime.strptime(update_at,'%Y-%m-%d %H:%M:%S')
         
     def __dict__(self):
-        return {"id":self.id,"fileName":self.file_name,"title":self.title,"detail":self.detail,"createAt":self.create_at.strftime('%Y-%m-%d %H:%M:%S'),"updateAt":self.update_at.strftime('%Y-%m-%d %H:%M:%S')}
+        return {"id":self.id,"fileName":self.file_name,"ext":self.ext, "title":self.title,"detail":self.detail,"createAt":self.create_at.strftime('%Y-%m-%d %H:%M:%S'),"updateAt":self.update_at.strftime('%Y-%m-%d %H:%M:%S')}
     def __str__(self):
-        return f"ImageListRecord(id={self.id}, file_name={self.file_name}, title={self.title}, " \
+        return f"ImageListRecord(id={self.id}, file_name={self.file_name},ext={self.ext}, title={self.title}, " \
                f"detail={self.detail}, create_at={self.create_at}, update_at={self.update_at})"
 
     

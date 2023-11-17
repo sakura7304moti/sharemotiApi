@@ -26,9 +26,10 @@ def init():
     
     # テーブル作成
     cur.execute(
-    """create table if not exists imageList(
+    """CREATE TABLE IF NOT EXISTS imageList2(
         id INTEGER PRIMARY KEY,
         file_name STRING,
+        ext STRING,
         title STRING,
         detail STRING,
         create_at STRING,
@@ -39,14 +40,14 @@ def init():
     # データベースへコミット。これで変更が反映される。
     conn.commit()
     conn.close()
-    print('create table imageList')
+    print('create table imageList2')
     
     #todo DBとフォルダーの画像で一致しないのがあれば更新する
     
 """
 INSERT
 """
-def insert(file_name:str,title:str,detail:str):
+def insert(file_name:str,ext:str,title:str,detail:str):
     try:
         # 現在の日時を取得
         current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -55,10 +56,10 @@ def insert(file_name:str,title:str,detail:str):
         cursor = conn.cursor()
 
         query = """
-        INSERT INTO imageList (file_name , title, detail , create_at, update_at) VALUES 
-        (:file_name, :title, :detail, :current_time, :current_time)
+        INSERT INTO imageList2 (file_name , ext , title, detail , create_at, update_at) VALUES 
+        (:file_name, :ext ,  :title, :detail, :current_time, :current_time)
         """
-        args = {"file_name":file_name,"title":title,"detail":detail,"current_time":current_time}
+        args = {"file_name":file_name,"ext":ext,"title":title,"detail":detail,"current_time":current_time}
         cursor.execute(query, args)
 
         # データベースへコミット。これで変更が反映される。
@@ -83,7 +84,7 @@ def update(id:int,title:str,detail:str):
         cursor = conn.cursor()
         
         query = """
-        UPDATE imageList SET title = :title , detail = :detail , update_at = :current_time WHERE id = :id
+        UPDATE imageList2 SET title = :title , detail = :detail , update_at = :current_time WHERE id = :id
         """
         
         args={
@@ -111,7 +112,7 @@ def delete(id:int):
         # データベースに接続する
         conn = sqlite3.connect(dbname)
         cursor = conn.cursor()
-        query = "DELETE FROM imageList WHERE id = :id"
+        query = "DELETE FROM imageList2 WHERE id = :id"
         args = {"id":id}
         # レコードを削除する
         cursor.execute(query, args)
@@ -133,7 +134,7 @@ def search():
     # データベースに接続する
     conn = sqlite3.connect(dbname)
     cursor = conn.cursor()
-    query = "SELECT * FROM imageList"
+    query = "SELECT * FROM imageList2"
     # SELECTクエリを実行
     cursor.execute(query)
     results = cursor.fetchall()
